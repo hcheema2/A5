@@ -10,10 +10,17 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("Details.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 500, 500));
-        primaryStage.show();
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("Details.fxml"));
+      Parent root  = loader.load();
+      DetailsController controller = loader.getController();
+      Scene scene  = new Scene(root , 500 , 500);
+      primaryStage.setTitle("Coin Tracker");
+      primaryStage.setScene(scene);
+      primaryStage.show();
+
+      primaryStage.setOnHidden(e -> controller.shutdown());
+
+
     }
 
 

@@ -1,5 +1,9 @@
 package a5;
 
+import A6.Coin;
+import A6.UpdateCoin;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,6 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DetailsController {
     @FXML
@@ -23,11 +29,37 @@ public class DetailsController {
     @FXML
     HBox ETHhbox;
 
+    Coin bitcoin , ethereum ;
+    Timer bitcoinTimer , ethereumTimer;
+
 
 // the values of label present sent in initialize method
     public void initialize(){
-        labelBTC.setText("$48,000.00");
-        labelETH.setText("$1,832.00");
+        this.bitcoin = new Coin("bitcoin");
+        this.ethereum = new Coin("ethereum");
+
+
+        labelBTC.textProperty().bind(Bindings.format("$%-10.2f" , bitcoin.currentPriceProperty()));
+        labelETH.textProperty().bind(Bindings.format("$%-10.2f" , ethereum.currentPriceProperty()));
+
+        bitcoinTimer = new Timer();
+        bitcoinTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(new UpdateCoin(bitcoin));
+            }
+        } , 0  , 5000);
+
+        ethereumTimer = new Timer();
+        ethereumTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(new UpdateCoin(ethereum));
+            }
+        } , 0 , 5000);
+       // labelBTC.setText("$48,000.00");
+       // labelETH.setText("$1,832.00");
+
     }
 
     public DetailsController(){
@@ -37,19 +69,19 @@ public class DetailsController {
 
 
     public void buttonClicked(MouseEvent mouseEvent) throws IOException {
-        if(mouseEvent.getSource() == BTChbox){
-            System.out.println("to BTC");
-            Parent root = FXMLLoader.load(getClass().getResource("BTC.fxml"));
-            Stage primaryStage = (Stage) BTChbox.getScene().getWindow();
+        shutdown();
+
+
+        Parent root = FXMLLoader.load(getClass().getResource("Chart.fxml"));Stage primaryStage = (Stage) BTChbox.getScene().getWindow();
             primaryStage.setScene(new Scene(root, 500, 500));
-        }
-        if(mouseEvent.getSource() == ETHhbox){
-            System.out.println("to ETH");
-            Parent root = FXMLLoader.load(getClass().getResource("ETH.fxml"));
-            Stage primaryStage = (Stage) ETHhbox.getScene().getWindow();
-            primaryStage.setScene(new Scene(root, 500, 500));
-        }
+
+
     }
 
 
+    public void shutdown(){
+        System.out.println("Shutdown called Timer stopped");
+        bitcoinTimer.cancel();
+        ethereumTimer.cancel();
+    }
 }

@@ -5,9 +5,13 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
+    <content url="file://$USER_HOME$/CMPS3390_/a6">
+      <sourceFolder url="file://$USER_HOME$/CMPS3390_/a6/src" isTestSource="false" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="javafx-sdk-11.0" level="project" />
+    <orderEntry type="library" name="json-20201115" level="project" />
   </component>
 </module>
